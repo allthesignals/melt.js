@@ -62,7 +62,29 @@ melt = (function (undefined) {
     return newData;
   }
 
-  function cast(data, keep, fun) {
+  function cast(data, castColumn, valueColumn) {
+    var categories = [];
+    var newData = [];
+    // var 
+
+    data.forEach(function(row, index) {
+      // get uniques
+
+      categories.forEach(function(category) {
+        if(row[castColumn] !== category) {
+          categories.push(row[castColumn]);
+        }
+      });  
+      // delete data[index][castColumn];
+    });
+
+    categories.forEach(function(category) {
+      data[category] = data[valueColumn];
+    });
+
+  }
+
+  function groupby(data, keep, fun) {
     var funArgs = Array.prototype.slice.call(arguments, 3),
     keepData = {},
     funStash = {};
@@ -85,7 +107,7 @@ melt = (function (undefined) {
     });
   }
 
-  cast.sum = function (row, acc, name, cols) {
+  groupby.sum = function (row, acc, name, cols) {
     if (!this.sum) {
       var sum = function (row, acc, name, cols) {
         acc[name] = cols.reduce(function (a, k) {
@@ -102,13 +124,13 @@ melt = (function (undefined) {
     return this.sum(row, acc);
   };
 
-  cast.count = function (row, acc, name) {
+  groupby.count = function (row, acc, name) {
     if (!acc[name]) acc[name] = 0;
     acc[name] += 1;
     return acc;
   };
 
-  melt.cast = cast;
+  melt.groupby = groupby;
   return melt;
 })(),
-  cast = melt.cast;
+  groupby = melt.groupby;

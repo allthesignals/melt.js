@@ -21,9 +21,9 @@ suite.addBatch({
     topic: function() {
       return spend;
     },
-    'When cast is called with sum of Spent for Name': {
+    'When groupby is called with sum of Spent for Name': {
       'Then we get back totals of spend': function(data) {
-        var iron = cast(data,["Name"],cast.sum,"Spent");
+        var iron = groupby(data,["Name"],groupby.sum,"Spent");
         assert.deepEqual(iron,[
              { Name: 'Mr A', Spent: 210 },
              { Name: 'Mr B', Spent: 100 },
